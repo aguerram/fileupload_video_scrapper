@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <title>Video Player</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="container mt-3">
+        <div class="form-group">
+          <label for="">Link</label>
+          <input
+            type="text"
+            class="form-control"
+            id="videolink"
+            aria-describedby="helpId"
+            placeholder="Video link example: https://www.file-up.org/9u0hizd0j8kt"
+          />
+          <button id="findvideo" class="btn btn-success">Open video</button>
+
+          <div class="container mt-3">
+            <video controls id="vid" style="width: 100%"></video>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(function() {
+        $("#findvideo").click(function() {
+          var link = $("#videolink").val();
+          if (link) {
+            if (link.trim().length > 0) {
+              var linkSplit = link.split("/");
+              var link = linkSplit[linkSplit.length - 1];
+              $.ajax({
+                url: "/video/" + link,
+                type: "get",
+                success: function(data) {
+                  $("#vid").attr("src", data);
+                },
+                error: function(err) {
+                  alert("Link not working");
+                }
+              });
+            } else {
+              alert("Link is required");
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
